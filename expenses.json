@@ -1,32 +1,9 @@
 [
   {
-    "id": 1,
-    "description": "Groceries",
-    "amount": 45.5,
-    "category": "Food"
-  },
-  {
-    "id": 2,
-    "description": "Bus pass",
-    "amount": 30,
-    "category": "Transport"
-  },
-  {
-    "id": 1780397959860,
-    "description": "Monthly Gift",
-    "amount": 200,
-    "category": "Food"
-  },
-  {
-    "id": 1780398138061,
-    "description": "Went for a movie",
-    "amount": 700,
-    "category": "Fun"
-  },
-  {
-    "id": 1780398157184,
-    "description": "Bike Fuel",
-    "amount": 1010,
+    "id": 1780400059127,
+    "createdAt": "2026-06-02T11:34:19.000Z",
+    "description": "Web Work",
+    "amount": 12000,
     "category": "Bills"
   }
 ]

@@ -1,14 +1,13 @@
 <script>
   import { enhance } from "$app/forms";
-  let { form } = $props();
+  let { data, form } = $props();
 
   const categories = ["Food", "Transport", "Fun", "Bills", "Other"];
-  const today = new Date().toISOString().slice(0, 10); // "2026-06-02"
 </script>
 
 <section class="form-wrap">
-  <h1>New entry</h1>
-  <p class="sub">Record an expense in your ledger.</p>
+  <h1>Edit entry</h1>
+  <p class="sub">Update this expense.</p>
 
   {#if form?.error}
     <p class="error">{form.error}</p>
@@ -20,8 +19,7 @@
       <input
         type="text"
         name="description"
-        placeholder="What did you spend on?"
-        value={form?.description ?? ""}
+        value={form?.description ?? data.expense.description}
       />
     </label>
 
@@ -32,9 +30,8 @@
         <input
           type="number"
           name="amount"
-          placeholder="0.00"
           step="0.01"
-          value={form?.amount ?? ""}
+          value={form?.amount ?? data.expense.amount}
         />
       </div>
     </label>
@@ -43,16 +40,17 @@
       <span>Category</span>
       <select name="category">
         {#each categories as cat}
-          <option>{cat}</option>
+          <option selected={cat === (form?.category ?? data.expense.category)}
+            >{cat}</option
+          >
         {/each}
       </select>
     </label>
-    <label>
-      <span>Date</span>
-      <input type="date" name="date" value={form?.date ?? today} />
-    </label>
-    <button type="submit">Add to ledger</button>
+
+    <button type="submit">Save changes</button>
   </form>
+
+  <a class="back" href="/">← Cancel</a>
 </section>
 
 <style>
@@ -60,7 +58,6 @@
     max-width: 420px;
     margin: 1rem auto 0;
   }
-
   h1 {
     font-family: "Fraunces", serif;
     font-weight: 600;
@@ -68,24 +65,20 @@
     margin: 0;
     letter-spacing: -0.02em;
   }
-
   .sub {
     color: #9a8f7e;
     margin: 0.4rem 0 2rem;
   }
-
   form {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
   }
-
   label {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
   }
-
   label span {
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -93,7 +86,6 @@
     color: #6b6256;
     font-weight: 500;
   }
-
   input,
   select {
     padding: 0.8rem 0.9rem;
@@ -107,14 +99,12 @@
       border-color 0.2s ease,
       box-shadow 0.2s ease;
   }
-
   input:focus,
   select:focus {
     outline: none;
     border-color: #c4622d;
     box-shadow: 0 0 0 3px rgba(196, 98, 45, 0.12);
   }
-
   .amount-field {
     display: flex;
     align-items: center;
@@ -126,29 +116,23 @@
       border-color 0.2s ease,
       box-shadow 0.2s ease;
   }
-
   .amount-field:focus-within {
     border-color: #c4622d;
     box-shadow: 0 0 0 3px rgba(196, 98, 45, 0.12);
   }
-
   .amount-field .prefix {
     padding: 0 0.4rem 0 0.9rem;
     color: #9a8f7e;
-    font-size: 1rem;
   }
-
   .amount-field input {
     border: none;
     background: transparent;
     box-shadow: none;
     flex: 1;
   }
-
   .amount-field input:focus {
     box-shadow: none;
   }
-
   button {
     margin-top: 0.5rem;
     padding: 0.9rem;
@@ -164,12 +148,20 @@
       background 0.2s ease,
       transform 0.12s ease;
   }
-
   button:hover {
     background: #1a1714;
   }
-
   button:active {
     transform: scale(0.985);
+  }
+  .back {
+    display: inline-block;
+    margin-top: 1.25rem;
+    color: #9a8f7e;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .back:hover {
+    color: #2b2722;
   }
 </style>

@@ -1,4 +1,5 @@
 <script>
+  import { enhance } from "$app/forms";
   let { data } = $props();
 
   let total = $derived(data.expenses.reduce((sum, e) => sum + e.amount, 0));
@@ -10,6 +11,18 @@
     Bills: "#4a5a8a",
     Other: "#7a6f5d",
   };
+
+  function formatDate(iso) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    return d.toLocaleString("en-IN", {
+      day: "numeric",
+      month: "short",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
 </script>
 
 <section class="summary">
@@ -34,11 +47,20 @@
           class="dot"
           style="background: {categoryColors[expense.category] ?? '#7a6f5d'}"
         ></span>
-        <div class="info">
+        <a class="info" href="/expenses/{expense.id}">
           <span class="desc">{expense.description}</span>
-          <span class="cat">{expense.category}</span>
-        </div>
+          <span class="cat"
+            >{expense.category} · {formatDate(expense.createdAt)}</span
+          >
+        </a>
         <span class="amt">₹{expense.amount.toFixed(2)}</span>
+
+        <form method="POST" action="?/delete" use:enhance>
+          <input type="hidden" name="id" value={expense.id} />
+          <button type="submit" class="del" aria-label="Delete expense"
+            >✕</button
+          >
+        </form>
       </li>
     {/each}
   </ul>
@@ -98,6 +120,27 @@
     box-shadow: 0 8px 20px -8px rgba(43, 39, 34, 0.18);
   }
 
+  .ledger li form {
+    margin: 0;
+  }
+
+  .del {
+    background: transparent;
+    border: none;
+    color: #c9bfae;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 8px;
+    line-height: 1;
+    transition: all 0.18s ease;
+  }
+
+  .del:hover {
+    color: #c4622d;
+    background: #f0e7d8;
+  }
+
   .dot {
     width: 10px;
     height: 10px;
@@ -141,5 +184,13 @@
     color: #c4622d;
     text-decoration: none;
     font-weight: 500;
+  }
+  a.info {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a.info:hover .desc {
+    color: #c4622d;
   }
 </style>
